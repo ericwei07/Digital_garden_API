@@ -2,6 +2,10 @@ var express = require('express');
 var db = require('../config/database.js');
 const {where} = require("sequelize");
 var router = express.Router();
+let crypto = require("crypto");
+let jwt = require("jsonwebtoken");
+require('dotenv').config();
+
 
 router.post('/login', async function (req, res, next) {
     if (!req.body.username || !req.body.password) {
@@ -9,6 +13,7 @@ router.post('/login', async function (req, res, next) {
             result : 3,
             detail : 'username or password is empty',
         }));
+        return
     }
 
     let user = await db.user_data.findOne({where: {name: req.body.username}});
@@ -65,7 +70,8 @@ router.post('/signup', async function(req, res, next) {
         }));
         return
     }
-    let salt = crypto.randomBytes(64).toString('hex')
+    let salt = crypto.randomBytes(32).toString('hex')
+    console.log(salt)
     let passwordHash = crypto.createHash('sha512').update(req.body.password + salt).digest('hex')
     await db.user_data.create({
         email: req.body.email,
