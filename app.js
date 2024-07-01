@@ -6,7 +6,6 @@ let logger = require('morgan');
 const { sequelize } = require('./config/database');
 
 let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
 let userRouter = require('./routes/user');
 let accountRouter = require('./routes/account');
 let articleRouter = require('./routes/article');
@@ -27,8 +26,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
 app.use('/account', accountRouter);
 app.use('/user', userRouter);
 app.use('/article', articleRouter);
@@ -38,7 +35,6 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;

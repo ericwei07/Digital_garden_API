@@ -1,12 +1,13 @@
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define(
-        'garden_data', {
+        'garden_data',
+        {
             writer: {
                 type: DataTypes.INTEGER,
                 field: 'writer',
             },
             content: {
-                type: DataTypes.TEXT,
+                type: DataTypes.STRING,
                 field: 'content',
             },
             date_publish: {
@@ -16,6 +17,16 @@ module.exports = function (sequelize, DataTypes) {
             date_edit: {
                 type: DataTypes.BIGINT,
                 field: 'date_edit',
+            },
+            title: {
+                type: DataTypes.STRING,
+                field: 'title',
+            },
+            article_id: {
+                type: DataTypes.INTEGER,
+                field: 'article_id',
+                autoIncrement: true,
+                primaryKey: true
             }
         },
         {

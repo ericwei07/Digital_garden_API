@@ -29,6 +29,10 @@ module.exports = function (sequelize, DataTypes) {
             date_joined: {
                 type: DataTypes.BIGINT,
                 field: 'date_joined',
+            },
+            salt: {
+                type: DataTypes.STRING,
+                field: 'salt',
             }
         },
         {

@@ -4,7 +4,24 @@ const {where} = require("sequelize");
 var router = express.Router();
 
 router.get('/profile', async function(req, res, next) {
-    let user = await db.user_data.findOne({where: {user_id: req.body.id}});
+    if (!req.query.id) {
+        res.send(JSON.stringify({
+            result : 1,
+            detail : 'id can not be empty'
+        }));
+        return
+    }
+
+    let user = await db.user_data.findOne({where: {user_id: req.query.id}});
+
+    if (!user) {
+        res.send(JSON.stringify({
+            result : 1,
+            detail : 'account not found'
+        }))
+        return
+    }
+
     let timestamp = new Date(user.date_joined)
     let year = timestamp.getFullYear() + "/"
     let month =  timestamp.getMonth() + 1 + "/"
@@ -20,11 +37,10 @@ router.get('/profile', async function(req, res, next) {
     if (second.length < 2) second = "0" + second
     time += month + day + " " + hour + minute + second
 
-    result = {
+    let result = {
         id: user.user_id,
         name: user.name,
         email: user.email,
-        date_joined: user.date_joined,
         profile_pic: user.profile_picture,
         join_date : time
     }
