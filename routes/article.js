@@ -5,10 +5,10 @@ var router = express.Router();
 
 router.post('/post', async function(req, res, next) {
     if (!req.body.title || !req.body.content || !req.body.writer) {
-        res.send(JSON.stringify({
+        res.json({
             result : 1,
             detail : 'title/content/author can not be empty'
-        }))
+        })
         return
     }
     await db.garden_data.create({
@@ -17,18 +17,18 @@ router.post('/post', async function(req, res, next) {
         date_publish: Date.now(),
         writer: req.body.writer,
     });
-    res.send(JSON.stringify({
+    res.json({
         result : 0,
         detail : 'article successfully posted'
-    }));
+    });
 });
 
 router.post('/update', async function(req, res, next) {
     if (!req.body.title || !req.body.content) {
-        res.send(JSON.stringify({
+        res.json({
             result : 1,
             detail : 'title/content can not be empty'
-        }))
+        })
         return
     }
     let article = await db.garden_data.findOne({where: {article_id: req.body.id}});
@@ -36,18 +36,18 @@ router.post('/update', async function(req, res, next) {
     article.content = req.body.content;
     article.date_edit = Date.now();
     await article.save()
-    res.send(JSON.stringify({
+    res.json({
         result : 0,
         detail : 'title/content updated successfully'
-    }));
+    });
 });
 
 router.get('/get', async function(req, res, next) {
     if (!req.query.id) {
-        res.send(JSON.stringify({
+        res.json({
             result : 1,
             detail : 'id can not be empty'
-        }))
+        })
         return
     }
     let article = await db.garden_data.findOne({
@@ -57,13 +57,13 @@ router.get('/get', async function(req, res, next) {
         }
     )
     if (!article) {
-        res.send(JSON.stringify({
+        res.json({
             result : 1,
             detail : 'article does not exist'
-        }))
+        })
         return
     }
-    res.send(JSON.stringify(
+    res.json(
         {
             result : 0,
             detail : 'successfully get article',
@@ -74,7 +74,7 @@ router.get('/get', async function(req, res, next) {
             writer: article.writer,
             id : article.article_id
         }
-    ));
+    );
 });
 
 router.get('/list', async function(req, res, next) {
@@ -85,11 +85,11 @@ router.get('/list', async function(req, res, next) {
             order: [['date_publish', 'DESC']]
             }
         )
-        res.send(JSON.stringify({
+        res.json({
             result : 0,
             detail : 'list of articles for all user',
             list: list
-        }));
+        });
         return
     }
     let list = await db.garden_data.findAll({
@@ -101,31 +101,31 @@ router.get('/list', async function(req, res, next) {
         }
     )
     if (!list) {
-        res.send(JSON.stringify({
+        res.json({
             result : 1,
             detail : 'user does not exist'
-        }))
+        });
         return
     }
-    res.send(JSON.stringify( {
+    res.json( {
         result : 0,
         detail : 'list of articles for specific user',
         list: list
-    }));
+    });
 });
 
 router.delete('/delete', async function (req, res, next) {
     if (!req.query.id) {
-        res.send(JSON.stringify({
+        res.json({
             result : 1,
             detail : 'id can not be empty'
-        }))
+        });
     }
     await db.garden_data.destroy({where: {article_id: req.query.id}});
-    res.send(JSON.stringify({
+    res.json({
         result : 0,
         detail : 'deleted successfully'
-    }));
+    });
 });
 
 module.exports = router;

@@ -5,20 +5,20 @@ var router = express.Router();
 
 router.get('/profile', async function(req, res, next) {
     if (!req.query.id) {
-        res.send(JSON.stringify({
+        res.json({
             result : 1,
             detail : 'id can not be empty'
-        }));
+        });
         return
     }
 
     let user = await db.user_data.findOne({where: {user_id: req.query.id}});
 
     if (!user) {
-        res.send(JSON.stringify({
+        res.json({
             result : 1,
             detail : 'account not found'
-        }))
+        });
         return
     }
 
@@ -44,7 +44,7 @@ router.get('/profile', async function(req, res, next) {
         profile_pic: user.profile_picture,
         join_date : time
     }
-    res.send(JSON.stringify(result));
+    res.json(result);
 });
 
 module.exports = router;
