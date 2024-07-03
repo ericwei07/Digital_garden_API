@@ -16,7 +16,7 @@ router.get('/profile', async function(req, res, next) {
 
     if (!user) {
         res.json({
-            result : 1,
+            result : 2,
             detail : 'account not found'
         });
         return
@@ -37,14 +37,13 @@ router.get('/profile', async function(req, res, next) {
     if (second.length < 2) second = "0" + second
     time += month + day + " " + hour + minute + second
 
-    let result = {
+    res.json({
         id: user.user_id,
         name: user.name,
         email: user.email,
         profile_pic: user.profile_picture,
         join_date : time
-    }
-    res.json(result);
+    });
 });
 
 module.exports = router;
