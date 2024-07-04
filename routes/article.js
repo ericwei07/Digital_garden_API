@@ -63,6 +63,9 @@ router.get('/get', async function(req, res, next) {
         }
         }
     )
+    let author = await db.user_data.findOne({
+        where : {user_id: article.writer}
+    })
     if (!article) {
         res.json({
             result : 1,
@@ -70,23 +73,23 @@ router.get('/get', async function(req, res, next) {
         })
         return
     }
-    let edit_timestamp = article.date_edit
-    let edit_year = edit_timestamp.getFullYear() + '/'
-    let edit_month =  edit_timestamp.getMonth() + 1 + '/'
-    let edit_day = edit_timestamp.getDate() + ' '
-    let edit_hour = edit_timestamp.getHours() + ":"
-    let edit_minute = edit_timestamp.getMinutes()
+    let edit_year, edit_day, edit_month, edit_hour, edit_minute
+    if (article.date_edit) {
+        let edit_timestamp = new Date(article.date_edit)
+        edit_year = edit_timestamp.getFullYear() + '/'
+        edit_month =  edit_timestamp.getMonth() + 1 + '/'
+        edit_day = edit_timestamp.getDate() + ' '
+        edit_hour = edit_timestamp.getHours() + ":"
+        edit_minute = edit_timestamp.getMinutes()
+    }
     let edit_time = edit_year + edit_month + edit_day + edit_hour + edit_minute
-    let publish_timestamp = article.date_publish
+    let publish_timestamp = new Date(article.date_publish)
     let publish_year = publish_timestamp.getFullYear() + '/'
     let publish_month =  publish_timestamp.getMonth() + 1 + '/'
     let publish_day = publish_timestamp.getDate() + ' '
     let publish_hour = publish_timestamp.getHours() + ":"
     let publish_minute = publish_timestamp.getMinutes()
     let publish_time = publish_year + publish_month + publish_day + publish_hour + publish_minute
-    let author = db.user_data.findOne({
-        where : {user_id: article.writer}
-    })
     res.json(
         {
             result : 0,
@@ -95,7 +98,7 @@ router.get('/get', async function(req, res, next) {
             date_edit: edit_time,
             date_publish: publish_time,
             title: article.title,
-            writer: author.username,
+            writer: author.name,
             id : article.article_id
         }
     );
@@ -144,6 +147,7 @@ router.delete('/delete', async function (req, res, next) {
             result : 1,
             detail : 'id can not be empty'
         });
+        return
     }
     await db.garden_data.destroy({where: {article_id: req.query.id}});
     res.json({
