@@ -10,6 +10,8 @@ let indexRouter = require('./routes/index');
 let userRouter = require('./routes/user');
 let accountRouter = require('./routes/account');
 let articleRouter = require('./routes/article');
+let linksRouter = require('./routes/links');
+let commentRouter = require('./routes/comment');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -31,6 +33,8 @@ app.use('/', indexRouter);
 app.use('/account', accountRouter);
 app.use('/user', userRouter);
 app.use('/article', articleRouter);
+app.use('/links', linksRouter);
+app.use('/comment', commentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
