@@ -4,16 +4,32 @@ const {where} = require("sequelize");
 var router = express.Router();
 
 router.post('/add', async function (req, res, next) {
-    if (!req.body.user_id || !req.body.content) {
+    if (!req.body.user_id) {
         res.json({
             result : 1,
-            detail : 'user id or content is empty',
+            detail : 'user id is empty',
         });
         return
     }
-    await db.comments_data.create({
+    if (!req.body.article_id) {
+        res.json({
+            result : 2,
+            detail : 'article id is empty',
+        });
+        return
+    }
+    if (!req.body.content) {
+        res.json({
+            result : 3,
+            detail : 'content is empty',
+        });
+        return
+    }
+    await db.comments_data.create(
+        {
             author_id: req.body.user_id,
             content: req.body.content,
+            article_id: req.body.article_id,
             create_date: Date.now(),
         }
     )
@@ -35,6 +51,7 @@ router.get('/get', async function (req, res, next) {
         where: {
             article_id: req.query.article_id
         },
+        limit: 100,
         order: [['comment_id', 'DESC']]
     })
     res.json({
@@ -58,5 +75,6 @@ router.delete('/delete', async function (req, res, next) {
         detail : "comment deleted"
     })
 })
+
 
 module.exports = router;

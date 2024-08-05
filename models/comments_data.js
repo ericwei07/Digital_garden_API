@@ -24,10 +24,6 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.BIGINT,
                 field: 'create_date',
             },
-            edit_date: {
-                type: DataTypes.BIGINT,
-                field: 'edit_date',
-            },
         },
         {
             freezeTableName: true,
