@@ -40,7 +40,7 @@ router.post('/add', async function (req, res, next) {
 });
 
 router.get('/get', async function (req, res, next) {
-    if (!req.query.article_id) {
+    if (!req.query.id) {
         res.json({
             result : 1,
             detail : 'article id is empty',
@@ -49,7 +49,7 @@ router.get('/get', async function (req, res, next) {
     }
     let comments = await db.comments_data.findAll({
         where: {
-            article_id: req.query.article_id
+            article_id: req.query.id
         },
         limit: 100,
         order: [['comment_id', 'DESC']]
