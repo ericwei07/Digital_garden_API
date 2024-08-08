@@ -54,10 +54,21 @@ router.get('/get', async function (req, res, next) {
         limit: 100,
         order: [['comment_id', 'DESC']]
     })
+    let names = []
+    for (let comment of comments) {
+        let author = await db.user_data.findOne({
+            where : {
+                user_id: comment.author_id
+            }
+        })
+        names.push(author.name)
+    }
+
     res.json({
         result : 0,
         detail : 'comments for specific article',
-        content : comments
+        content : comments,
+        author_names : names
     })
 })
 
