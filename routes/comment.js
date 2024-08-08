@@ -80,7 +80,7 @@ router.delete('/delete', async function (req, res, next) {
         })
         return
     }
-    await db.comments_data.destroy({where: {id: req.query.id}});
+    await db.comments_data.destroy({where: {comment_id: req.query.id}});
     res.json({
         result : 0,
         detail : "comment deleted"
