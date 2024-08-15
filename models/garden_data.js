@@ -7,7 +7,7 @@ module.exports = function (sequelize, DataTypes) {
                 field: 'writer',
             },
             content: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT('medium'),
                 field: 'content',
             },
             date_publish: {
@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
                 field: 'date_edit',
             },
             title: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 field: 'title',
             },
             article_id: {

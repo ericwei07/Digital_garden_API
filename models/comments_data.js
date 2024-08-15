@@ -17,7 +17,7 @@ module.exports = function (sequelize, DataTypes) {
                 field: 'author_id',
             },
             content: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT('medium'),
                 field: 'content',
             },
             create_date: {
